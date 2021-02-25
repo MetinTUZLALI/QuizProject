@@ -2,16 +2,31 @@ const questionCounterText = document.getElementById("questionCounter")
 const scoreText = document.getElementById("score")
 const question = document.getElementById("question")
 const choices = Array.from(document.getElementsByClassName("choice-text"));
+const timeText = document.getElementById("timeText");
 
-
+let timeCounter = 10;
 let availableQuesions = [];
 let currentQuestion = {};
 let acceptingAnswers = false;
 let questionCounter = 0;
 let score = 0;
 
+
 const CORRECT_BONUS = 100/questions.length;
 const MAX_QUESTIONS = questions.length;
+
+timePrinter = () => {
+    setInterval (()=>{
+        timeCounter--
+        timeText.innerHTML = `${timeCounter}`
+        if (timeCounter==0) {
+            getNewQuestion();
+            timeCounter=11;
+        }
+        },1000 );
+
+} 
+timePrinter();
 
 
 startgame = () => {
@@ -23,8 +38,9 @@ startgame = () => {
 
 getNewQuestion = () => {
     if (questionCounter >= MAX_QUESTIONS || availableQuesions.length === 0) {
-        return window.location.assign("./end.html")
-    }
+        return window.location.assign("./index.html")
+    }   
+    
 
     questionCounter++;
     questionCounterText.innerText = questionCounter+"/"+MAX_QUESTIONS;
@@ -45,6 +61,7 @@ choices.forEach(choice => {
     choice.addEventListener("click", e => {
         if (!acceptingAnswers)
             return;
+            timeCounter=11;
         acceptingAnswers = false;
         const selectedChoice = e.target;
         const selectedAnswer = selectedChoice.dataset["number"]
@@ -67,6 +84,9 @@ incrementScore = num => {
     score+=num
     scoreText.innerHTML=score;
 }
+
+
+
 
 
 
